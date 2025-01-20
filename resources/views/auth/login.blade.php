@@ -38,8 +38,8 @@
                         </div>
 
                         <div class="form__div-input">
-                            <label for="" class="form__label">Username</label>
-                            <input  class="form__input"   type="email" name="email" :value="old('email')" required autofocus autocomplete="username">
+                            <label for="" class="form__label">Email or Unique ID</label>
+                            <input class="form__input" type="text" name="login" :value="old('login')" required autofocus>
                         </div>
                     </div>
 
@@ -50,7 +50,7 @@
 
                         <div class="form__div-input">
                             <label for="" class="form__label">Password</label>
-                            <input type="password" class="form__input"  id="password"  name="password" required autocomplete="current-password">
+                            <input type="password" class="form__input" id="password" name="password" required autocomplete="current-password">
                         </div>
                     </div>
                     <a href="#" class="form__forgot">Forgot Password?</a>

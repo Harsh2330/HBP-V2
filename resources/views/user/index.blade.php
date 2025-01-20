@@ -51,12 +51,17 @@
     <h1>User Management</h1>
     <a href="{{ route('admin.user.create') }}" class="btn btn-primary mb-3">Create New User</a>
 
+    <form method="GET" action="{{ route('admin.user.index') }}" class="mb-3">
+        <input type="text" name="search" placeholder="Search users..." class="form-control" value="{{ request('search') }}">
+    </form>
+
     <table class="table table-hover">
         <thead class="thead-dark">
             <tr>
                 <th>Name</th>
                 <th>Email</th>
                 <th>User Type</th>
+                <th>Unique ID</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -66,6 +71,7 @@
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->usertype }}</td>
+                    <td>{{ $user->unique_id }}</td>
                     <td>
                         <a href="{{ route('admin.user.edit', $user->id) }}" class="btn btn-warning btn-sm">Edit</a>
                         <form action="{{ route('admin.user.destroy', $user->id) }}" method="POST" style="display:inline;">
@@ -78,5 +84,7 @@
             @endforeach
         </tbody>
     </table>
+
+    {{ $users->links() }}
 </div>
 @endsection

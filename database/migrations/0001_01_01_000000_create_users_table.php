@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('unique_id')->unique(); // Add unique_id column
             $table->string('usertype')->default('patient');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

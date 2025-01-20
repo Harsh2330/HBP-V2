@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class RegisteredUserController extends Controller
 {
@@ -35,11 +37,17 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        $currentYear = date('Y');
+        $lastUser = User::whereYear('created_at', $currentYear)->orderBy('id', 'desc')->first();
+        $sequenceNumber = $lastUser ? intval(substr($lastUser->unique_id, -4)) + 1 : 1;
+        $uniqueId = sprintf('USR-%s-%04d', $currentYear, $sequenceNumber);
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'usertype' => 'user', // Assign default usertype as 'patient'
+            'unique_id' => $uniqueId, // Generate a unique ID for the user
         ]);
 
         event(new Registered($user));

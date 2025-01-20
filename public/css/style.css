@@ -60,8 +60,36 @@ main {
     padding: 2rem;
 }
 
+.logo {
+    width: 250px; /* Made the logo smaller */
+    height: auto;
+    margin-top: -1rem;
+}
+
+.patient-image {
+    width: 750px; /* Made the patient image smaller */
+    height: auto;
+    float: right;
+    margin-left: 2rem;
+}
+
 .limited-width {
-    max-width: 600px;
+    max-width: 800px;
+    height: 500px;
+    margin: 0 auto;
+    font-size: 1.3rem;
+    line-height: 1.6;
+    color: #333;
+    text-align: justify;
+    padding: 1rem;
+       
+    background-color: #f9f9f900;
+    border-radius: 8px;
+    overflow-y: auto;
+}
+
+.limited-width1 {
+    max-width: 650px;
     height: 300px;
     margin: 0 auto;
     font-size: 1.3rem;
@@ -74,6 +102,7 @@ main {
     border-radius: 8px;
     overflow-y: auto;
 }
+
 .hero {
     text-align: center;
     padding: 4rem 2rem;

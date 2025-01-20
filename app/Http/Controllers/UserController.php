@@ -7,9 +7,17 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
     // Display a list of users
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::all(); // Retrieve all users
+        $query = User::query();
+
+        if ($request->has('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%')
+                  ->orWhere('email', 'like', '%' . $request->search . '%')
+                  ->orWhere('unique_id', 'like', '%' . $request->search . '%');
+        }
+
+        $users = $query->paginate(5); // Retrieve 5 users per page
         return view('user.index', compact('users'));
     }
 
@@ -26,14 +34,21 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8',
-            'usertype' => 'required|in:doctor,admin,patient',
+            'usertype' => 'required|in:doctor,admin,patient,nurse',
         ]);
+
+        $currentYear = date('Y');
+        $prefix = strtoupper(substr($request->usertype, 0, 3));
+        $lastUser = User::where('usertype', $request->usertype)->whereYear('created_at', $currentYear)->orderBy('id', 'desc')->first();
+        $sequenceNumber = $lastUser ? intval(substr($lastUser->unique_id, -4)) + 1 : 1;
+        $uniqueId = sprintf('%s-%s-%04d', $prefix, $currentYear, $sequenceNumber);
 
         $user = new User;
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
         $user->usertype = $request->usertype;
+        $user->unique_id = $uniqueId; // Generate a unique ID for the user
         $user->save();
 
         return redirect()->route('admin.user.index')->with('status', 'User created successfully!');
@@ -52,7 +67,7 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $id,
-            'usertype' => 'required|in:doctor,admin,patient',
+            'usertype' => 'required|in:doctor,admin,patient,nurse',
         ]);
 
         $user = User::findOrFail($id);
@@ -61,6 +76,16 @@ class UserController extends Controller
         if ($request->password) {
             $user->password = bcrypt($request->password);
         }
+
+        if ($user->usertype !== $request->usertype) {
+            $currentYear = date('Y');
+            $prefix = strtoupper(substr($request->usertype, 0, 3));
+            $lastUser = User::where('usertype', $request->usertype)->whereYear('created_at', $currentYear)->orderBy('id', 'desc')->first();
+            $sequenceNumber = $lastUser ? intval(substr($lastUser->unique_id, -4)) + 1 : 1;
+            $uniqueId = sprintf('%s-%s-%04d', $prefix, $currentYear, $sequenceNumber);
+            $user->unique_id = $uniqueId;
+        }
+
         $user->usertype = $request->usertype;
         $user->save();
 

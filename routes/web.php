@@ -10,7 +10,16 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $user = Auth::user();
+    if ($user->usertype === 'admin') {
+        return redirect()->route('admin.dashboard');
+    } elseif ($user->usertype === 'doctor') {
+        return redirect()->route('doctor.dashboard');
+    } elseif ($user->usertype === 'patient') {
+        return redirect()->route('patient.dashboard');
+    } else {
+        return view('dashboard');
+    }
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {

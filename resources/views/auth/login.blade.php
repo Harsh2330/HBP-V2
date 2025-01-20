@@ -26,7 +26,7 @@
             <div class="shape2"></div>
 
             <div class="form">
-                <img src="/image/doctors.png" alt="" class="form__img">
+                <img src="/image/patients.jpg" alt="" class="form__img" style="width: 650px; height: auto; margin-top: -1rem;">
 
                 <form method="POST" action="{{ route('login') }}">
                     @csrf

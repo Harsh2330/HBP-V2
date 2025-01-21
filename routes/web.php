@@ -12,7 +12,20 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $user = Auth::user();
+    if ($user->usertype === 'admin') {
+        return redirect()->route('admin.dashboard');
+    } elseif ($user->usertype === 'doctor') {
+        return redirect()->route('doctor.dashboard');
+    } elseif ($user->usertype === 'patient') {
+        return redirect()->route('patient.dashboard');
+    } elseif ($user->usertype === 'user') {
+        return redirect()->route('users.dashboard'); // Change to 'users.dashboard'
+    } elseif ($user->usertype === 'nurse') {
+        return redirect()->route('nurse.dashboard');
+    } else {
+        return view('dashboard');
+    }
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -40,6 +53,12 @@ Route::get('doctor/dashboard', [HomeController::class, 'doctorIndex'])->name('do
 
 // Add patient panel routes
 Route::get('patient/dashboard', [HomeController::class, 'patientIndex'])->name('patient.dashboard');
+
+// Add user panel routes
+Route::get('users/dashboard', [HomeController::class, 'userIndex'])->name('users.dashboard'); // Change to 'users.dashboard'
+
+// Add nurse panel routes
+Route::get('nurse/dashboard', [HomeController::class, 'nurseIndex'])->name('nurse.dashboard');
 
 Route::get('/users', [UserController::class, 'index'])->name('user.index');
 

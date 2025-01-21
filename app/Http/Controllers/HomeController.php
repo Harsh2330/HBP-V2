@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class HomeController extends Controller
 {
@@ -19,5 +20,11 @@ class HomeController extends Controller
     public function patientIndex()
     {
         return view('patient.index');
+    }
+
+    // Update the userIndex method to return the users.dashboard view
+    public function userIndex(Request $request)
+    {
+        return view('users.dashboard');
     }
 }

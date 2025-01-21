@@ -71,6 +71,8 @@
             <option value="admin">Admin</option>
             <option value="doctor">Doctor</option>
             <option value="patient">Patient</option>
+            <option value="user">User</option>
+            <option value="nurse">Nurse</option>
         </select><br>
 
         <button type="submit" class="btn btn-primary">Create User</button>

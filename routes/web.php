@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\MedicalHistoryController;
+use App\Http\Controllers\MedicalVisitController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -54,3 +56,6 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function() {
     Route::resource('user', UserController::class);
     Route::get('users', [UserController::class, 'index'])->name('users.index'); // Add this line
 });
+
+Route::resource('medical_history', MedicalHistoryController::class);
+Route::resource('medical_visit', MedicalVisitController::class);

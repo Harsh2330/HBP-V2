@@ -34,7 +34,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8',
-            'usertype' => 'required|in:doctor,admin,patient,nurse',
+            'usertype' => 'required|in:doctor,admin,patient,nurse,user', // Ensure 'user' is included
         ]);
 
         $currentYear = date('Y');

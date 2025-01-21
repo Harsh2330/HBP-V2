@@ -22,6 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'unique_id', // Add unique_id to fillable attributes
+        'usertype', // Add usertype to fillable attributes
     ];
 
     /**

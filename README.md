@@ -1,4 +1,3 @@
-
 cd .\HBP-V2\
 composer install
 composer update

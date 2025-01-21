@@ -53,7 +53,7 @@
                             <input type="password" class="form__input" id="password" name="password" required autocomplete="current-password">
                         </div>
                     </div>
-                    <a href="#" class="form__forgot">Forgot Password?</a>
+                    <a href="{{ route('password.request') }}" class="form__forgot">Forgot Password?</a>
 
                     <button type="submit" class="form__button">
                         Log in

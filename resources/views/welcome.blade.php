@@ -16,6 +16,11 @@
             <a href="#" style="margin-right: 2rem;">About Us</a>
             <a href="{{ route('login') }}" style="margin-right: 2rem;">Login</a>
             <a href="{{ route('register') }}">Register</a>
+            <ul>
+        <li><a href="{{ route('case-paper.select-user') }}">Select User</a></li>
+        <!-- Add other links as needed -->
+        <li><a href="{{ route('case-paper.select-user-and-records') }}">Select User and View Records</a></li>
+    </ul>
         </nav>
     </header>
     <main>

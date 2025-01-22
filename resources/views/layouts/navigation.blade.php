@@ -29,6 +29,12 @@
                         <p>User Management</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.patient.index') }}" class="nav-link {{ request()->routeIs('admin.patient.index') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-user-injured"></i>
+                        <p>Patient Management</p>
+                    </a>
+                </li>
                 @endif
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('logout') }}"

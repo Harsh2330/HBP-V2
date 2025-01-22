@@ -11,7 +11,7 @@ class MedicalVisitController extends Controller
     // Display a listing of the medical visits
     public function index()
     {
-        $medicalVisits = MedicalVisit::with(['patient', 'doctor', 'nurse'])->paginate(10);
+        $medicalVisits = MedicalVisit::with('patient')->paginate(10); // Removed 'doctor' and 'nurse'
         return view('medical_visit.index', compact('medicalVisits'));
     }
 
@@ -27,39 +27,26 @@ class MedicalVisitController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'unique_id' => 'required|exists:users,unique_id',
+            'patient_id' => 'required|exists:users,id',
             'visit_date' => 'required|date',
             'doctor_name' => 'required|string',
             'nurse_name' => 'required|string',
             'diagnosis' => 'required|string',
-            'simplified_diagnosis' => 'required|string',
-            'blood_pressure' => 'required|string',
-            'heart_rate' => 'required|string',
-            'temperature' => 'required|string',
-            'weight' => 'required|string',
-            'ongoing_treatments' => 'required|string',
-            'medications_prescribed' => 'required|string',
-            'procedures' => 'required|string',
+            'simplified_diagnosis' => 'nullable|string',
+            'blood_pressure' => 'nullable|string',
+            'heart_rate' => 'nullable|string',
+            'temperature' => 'nullable|string',
+            'weight' => 'nullable|string',
+            'ongoing_treatments' => 'nullable|string',
+            'medications_prescribed' => 'nullable|string',
+            'procedures' => 'nullable|string',
             'doctor_notes' => 'nullable|string',
             'nurse_observations' => 'nullable|string',
         ]);
 
-        $medicalVisit = new MedicalVisit;
-        $medicalVisit->unique_id = $request->unique_id;
-        $medicalVisit->visit_date = $request->visit_date;
-        $medicalVisit->doctor_name = $request->doctor_name;
-        $medicalVisit->nurse_name = $request->nurse_name;
-        $medicalVisit->diagnosis = $request->diagnosis;
-        $medicalVisit->simplified_diagnosis = $request->simplified_diagnosis;
-        $medicalVisit->blood_pressure = $request->blood_pressure;
-        $medicalVisit->heart_rate = $request->heart_rate;
-        $medicalVisit->temperature = $request->temperature;
-        $medicalVisit->weight = $request->weight;
-        $medicalVisit->ongoing_treatments = $request->ongoing_treatments;
-        $medicalVisit->medications_prescribed = $request->medications_prescribed;
-        $medicalVisit->procedures = $request->procedures;
-        $medicalVisit->doctor_notes = $request->doctor_notes;
-        $medicalVisit->nurse_observations = $request->nurse_observations;
+        $patient = User::findOrFail($request->patient_id);
+        $medicalVisit = new MedicalVisit($request->all());
+        $medicalVisit->unique_id = $patient->unique_id;
         $medicalVisit->save();
 
         return redirect()->route('medical_visit.index')->with('status', 'Medical visit created successfully!');
@@ -68,7 +55,7 @@ class MedicalVisitController extends Controller
     // Show the details of a specific medical visit
     public function show($id)
     {
-        $visit = MedicalVisit::with(['patient'])->findOrFail($id);
+        $visit = MedicalVisit::with('patient')->findOrFail($id); // Removed 'doctor' and 'nurse'
         return view('medical_visit.show', compact('visit'));
     }
 }

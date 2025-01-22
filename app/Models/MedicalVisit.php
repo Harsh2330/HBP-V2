@@ -10,7 +10,7 @@ class MedicalVisit extends Model
     use HasFactory;
 
     protected $fillable = [
-        'patient_id', 'visit_date', 'doctor_name', 'nurse_name', 'diagnosis', 'simplified_diagnosis',
+        'patient_id', 'unique_id', 'visit_date', 'doctor_name', 'nurse_name', 'diagnosis', 'simplified_diagnosis',
         'blood_pressure', 'heart_rate', 'temperature', 'weight', 'ongoing_treatments',
         'medications_prescribed', 'procedures', 'doctor_notes', 'nurse_observations'
     ];
@@ -20,13 +20,5 @@ class MedicalVisit extends Model
         return $this->belongsTo(User::class, 'patient_id');
     }
 
-    public function doctor()
-    {
-        return $this->belongsTo(User::class, 'doctor_name', 'name');
-    }
-
-    public function nurse()
-    {
-        return $this->belongsTo(User::class, 'nurse_name', 'name');
-    }
+    // Removed unnecessary relationships
 }

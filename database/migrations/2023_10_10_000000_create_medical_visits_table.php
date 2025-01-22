@@ -11,6 +11,7 @@ class CreateMedicalVisitsTable extends Migration
         Schema::create('medical_visits', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('patient_id');
+            $table->string('unique_id'); // Removed unique constraint
             $table->date('visit_date');
             $table->string('doctor_name');
             $table->string('nurse_name');
@@ -27,7 +28,7 @@ class CreateMedicalVisitsTable extends Migration
             $table->text('nurse_observations')->nullable();
             $table->timestamps();
 
-            $table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade');
+            $table->foreign('patient_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

@@ -38,8 +38,52 @@
                         </div>
 
                         <div class="form__div-input">
-                            <label for="" class="form__label">Username</label>
-                            <input  class="form__input"   type="text" name="name" :value="old('name')" required autofocus autocomplete="name">
+                            <label for="" class="form__label">First Name</label>
+                            <input class="form__input" type="text" name="first_name" :value="old('first_name')" required autofocus autocomplete="first_name">
+                        </div>
+                    </div>
+
+                    <div class="form__div">
+                        <div class="form__icon">
+                            <i class='bx bx-user-circle'></i>
+                        </div>
+
+                        <div class="form__div-input">
+                            <label for="" class="form__label">Middle Name</label>
+                            <input class="form__input" type="text" name="middle_name" :value="old('middle_name')" autocomplete="middle_name">
+                        </div>
+                    </div>
+
+                    <div class="form__div">
+                        <div class="form__icon">
+                            <i class='bx bx-user-circle'></i>
+                        </div>
+
+                        <div class="form__div-input">
+                            <label for="" class="form__label">Last Name</label>
+                            <input class="form__input" type="text" name="last_name" :value="old('last_name')" required autocomplete="last_name">
+                        </div>
+                    </div>
+
+                    <div class="form__div">
+                        <div class="form__icon">
+                            <i class='bx bx-calendar'></i>
+                        </div>
+
+                        <div class="form__div-input">
+                            <label for="" class="form__label">Date of Birth</label>
+                            <input class="form__input" type="date" name="date_of_birth" :value="old('date_of_birth')" required autocomplete="date_of_birth">
+                        </div>
+                    </div>
+
+                    <div class="form__div">
+                        <div class="form__icon">
+                            <i class='bx bx-phone'></i>
+                        </div>
+
+                        <div class="form__div-input">
+                            <label for="" class="form__label">Phone Number</label>
+                            <input class="form__input" type="text" name="phone_number" :value="old('phone_number')" required autocomplete="phone_number">
                         </div>
                     </div>
 
@@ -50,7 +94,7 @@
 
                         <div class="form__div-input">
                             <label for="" class="form__label">Email</label>
-                            <input  class="form__input"   type="email" name="email" :value="old('email')" required autocomplete="email">
+                            <input class="form__input" type="email" name="email" :value="old('email')" required autocomplete="email">
                         </div>
                     </div>
 

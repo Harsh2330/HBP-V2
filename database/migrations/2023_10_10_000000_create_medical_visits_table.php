@@ -27,7 +27,7 @@ class CreateMedicalVisitsTable extends Migration
             $table->text('nurse_observations')->nullable();
             $table->timestamps();
 
-            $table->foreign('patient_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade');
         });
     }
 

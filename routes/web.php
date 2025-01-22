@@ -4,7 +4,6 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\MedicalHistoryController;
 use App\Http\Controllers\MedicalVisitController;
 
 Route::get('/', function () {
@@ -57,5 +56,6 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function() {
     Route::get('users', [UserController::class, 'index'])->name('users.index'); // Add this line
 });
 
-Route::resource('medical_history', MedicalHistoryController::class);
-Route::resource('medical_visit', MedicalVisitController::class);
+Route::resource('medical_visit', MedicalVisitController::class)->except(['index']);
+Route::get('medical_visit', [MedicalVisitController::class, 'index'])->name('medical_visit.index');
+Route::get('medical_visit/{medical_visit}', [MedicalVisitController::class, 'show'])->name('medical_visit.show');

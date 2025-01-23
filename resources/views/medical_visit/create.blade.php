@@ -37,7 +37,7 @@
                                         <label for="patient_id">Patient</label>
                                         <select name="patient_id" id="patient_id" class="form-control">
                                             @foreach($patients as $patient)
-                                                <option value="{{ $patient->id }}" data-unique-id="{{ $patient->unique_id }}">{{ $patient->name }}</option>
+                                                <option value="{{ $patient->id }}" data-unique-id="{{ $patient->unique_id }}">{{ $patient->first_name }} {{ $patient->middle_name }} {{ $patient->last_name }}</option>
                                             @endforeach
                                         </select>
                                     </div>

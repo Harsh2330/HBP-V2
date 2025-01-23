@@ -57,23 +57,115 @@
 
     <form action="{{ route('admin.user.store') }}" method="POST">
         @csrf
-        <label for="name">Name:</label>
-        <input type="text" name="name" required><br>
+        <div class="form__div form__div-one">
+            <div class="form__icon">
+                <i class='bx bx-user-circle'></i>
+            </div>
+            <div class="form__div-input">
+                <label for="" class="form__label">First Name</label>
+                <input class="form__input" type="text" name="first_name" required>
+                @error('first_name')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+            </div>
+        </div>
 
-        <label for="email">Email:</label>
-        <input type="email" name="email" required><br>
+        <div class="form__div">
+            <div class="form__icon">
+                <i class='bx bx-user-circle'></i>
+            </div>
+            <div class="form__div-input">
+                <label for="" class="form__label">Middle Name</label>
+                <input class="form__input" type="text" name="middle_name">
+                @error('middle_name')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+            </div>
+        </div>
 
-        <label for="password">Password:</label>
-        <input type="password" name="password" required><br>
+        <div class="form__div">
+            <div class="form__icon">
+                <i class='bx bx-user-circle'></i>
+            </div>
+            <div class="form__div-input">
+                <label for="" class="form__label">Last Name</label>
+                <input class="form__input" type="text" name="last_name" required>
+                @error('last_name')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+            </div>
+        </div>
 
-        <label for="usertype">User Type:</label>
-        <select name="usertype" required>
-            <option value="admin">Admin</option>
-            <option value="doctor">Doctor</option>
-            <option value="patient">Patient</option>
-            <option value="user">User</option>
-            <option value="nurse">Nurse</option>
-        </select><br>
+        <div class="form__div">
+            <div class="form__icon">
+                <i class='bx bx-calendar'></i>
+            </div>
+            <div class="form__div-input">
+                <label for="" class="form__label">Date of Birth</label>
+                <input class="form__input" type="date" name="date_of_birth" required>
+                @error('date_of_birth')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+            </div>
+        </div>
+
+        <div class="form__div">
+            <div class="form__icon">
+                <i class='bx bx-phone'></i>
+            </div>
+            <div class="form__div-input">
+                <label for="" class="form__label">Phone Number</label>
+                <input class="form__input" type="text" name="phone_number" required>
+                @error('phone_number')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+            </div>
+        </div>
+
+        <div class="form__div">
+            <div class="form__icon">
+                <i class='bx bx-envelope'></i>
+            </div>
+            <div class="form__div-input">
+                <label for="" class="form__label">Email</label>
+                <input class="form__input" type="email" name="email" required>
+                @error('email')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+            </div>
+        </div>
+
+        <div class="form__div">
+            <div class="form__icon">
+                <i class='bx bx-lock' ></i>
+            </div>
+            <div class="form__div-input">
+                <label for="" class="form__label">Password</label>
+                <input type="password" class="form__input" name="password" required>
+                @error('password')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+            </div>
+        </div>
+
+        <div class="form__div">
+            <div class="form__icon">
+                <i class='bx bx-user'></i>
+            </div>
+            <div class="form__div-input">
+                <label for="" class="form__label">User Type</label>
+                <select class="form__input" name="usertype" required>
+                    <option value="admin">Admin</option>
+                    <option value="doctor">Doctor</option>
+                    <option value="patient">Patient</option>
+                    <option value="user">User</option>
+                    <option value="nurse">Nurse</option>
+                </select>
+                @error('usertype')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+            </div>
+        </div>
 
         <button type="submit" class="btn btn-primary">Create User</button>
     </form>

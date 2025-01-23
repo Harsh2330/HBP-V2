@@ -18,6 +18,7 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
+                            @if($visit)
                             <div class="patient-details mb-4">
                                 <h3>Patient Information</h3>
                                 <p><strong>Name:</strong> {{ $visit->patient->name }}</p>
@@ -54,6 +55,9 @@
                                 <p><strong>Doctor's Notes:</strong> {{ $visit->doctor_notes }}</p>
                                 <p><strong>Nurse's Observations:</strong> {{ $visit->nurse_observations }}</p>
                             </div>
+                            @else
+                            <p>No visit details available.</p>
+                            @endif
                         </div>
                     </div>
                 </div>

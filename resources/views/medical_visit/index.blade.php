@@ -23,6 +23,7 @@
                             <h3 class="card-title">Medical Visits List</h3>
                         </div>
                         <div class="card-body">
+                            @if($medicalVisits)
                             <table class="table">
                                 <thead>
                                     <tr>
@@ -52,6 +53,9 @@
                                 </tbody>
                             </table>
                             {{ $medicalVisits->links() }}
+                            @else
+                            <p>No medical visits available.</p>
+                            @endif
                         </div>
                     </div>
                 </div>

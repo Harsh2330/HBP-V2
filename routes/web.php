@@ -64,6 +64,4 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function() {
     Route::post('patient', [PatientController::class, 'store'])->name('patient.store'); // Add this line
 });
 
-Route::resource('medical_visit', MedicalVisitController::class)->except(['index']);
-Route::get('medical_visit', [MedicalVisitController::class, 'index'])->name('medical_visit.index');
-Route::get('medical_visit/{medical_visit}', [MedicalVisitController::class, 'show'])->name('medical_visit.show');
+Route::resource('medical_visit', MedicalVisitController::class);

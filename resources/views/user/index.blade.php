@@ -27,6 +27,9 @@
 
                             <form method="GET" action="{{ route('admin.user.index') }}" class="mb-3">
                                 <input type="text" name="search" placeholder="Search users..." class="form-control" value="{{ request('search') }}">
+                                @error('search')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
                             </form>
 
                             <table class="table table-hover">

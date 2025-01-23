@@ -18,26 +18,16 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'first_name',
-        'middle_name',
-        'last_name',
-        'full_name',
-        'gender',
-        'date_of_birth',
-        'age_category',
-        'phone_number',
+        'first_name', // Add first_name to fillable attributes
+        'middle_name', // Add middle_name to fillable attributes
+        'last_name', // Add last_name to fillable attributes
+        'date_of_birth', // Add date_of_birth to fillable attributes
+        'phone_number', // Add phone_number to fillable attributes
+        'name',
         'email',
-        'full_address',
-        'religion',
-        'economic_status',
-        'bpl_card_number',
-        'ayushman_card',
-        'emergency_contact_name',
-        'emergency_contact_phone',
-        'emergency_contact_relationship',
-        'usertype',
-        'is_approved',
+        'password',
         'unique_id',
+        'usertype',
     ];
 
     /**
@@ -51,15 +41,26 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * The attributes that should be cast.
      *
-     * @return array<string, string>
+     * @var array<string, string>
      */
-    protected function casts(): array
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
+
+    public function approveAsPatient(array $patientDetails)
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        $this->usertype = 'patient';
+        $this->unique_id = uniqid('patient_');
+        $this->save();
+
+        return Patient::create(array_merge($patientDetails, ['user_id' => $this->id]));
+    }
+
+    public function patient()
+    {
+        return $this->hasOne(Patient::class);
     }
 }

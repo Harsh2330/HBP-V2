@@ -35,6 +35,12 @@
                         <p>Patient Management</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('medical_visit.create') }}" class="nav-link {{ request()->routeIs('medical_visit.create') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-plus"></i>
+                        <p>Create Medical Visit</p>
+                    </a>
+                </li>
                 @endif
                 <li class="nav-item">
                     <a href="{{ route('medical_visit.index') }}" class="nav-link {{ request()->routeIs('medical_visit.index') ? 'active' : '' }}">
@@ -42,12 +48,7 @@
                         <p>Medical Visits</p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="{{ route('medical_visit.create') }}" class="nav-link {{ request()->routeIs('medical_visit.create') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-plus"></i>
-                        <p>Create Medical Visit</p>
-                    </a>
-                </li>
+                
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('logout') }}"
                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

@@ -40,11 +40,7 @@
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th>First Name</th>
-                                        <th>Last Name</th>
-                                        <th>Gender</th>
-                                        <th>Date of Birth</th>
-                                        <th>Phone Number</th>
+                                        <th>Full Name</th>
                                         <th>Email</th>
                                         <th>Actions</th>
                                     </tr>
@@ -52,15 +48,16 @@
                                 <tbody>
                                     @foreach($patients as $patient)
                                         <tr>
-                                            <td>{{ $patient->first_name }}</td>
-                                            <td>{{ $patient->last_name }}</td>
-                                            <td>{{ $patient->gender }}</td>
-                                            <td>{{ $patient->date_of_birth }}</td>
-                                            <td>{{ $patient->phone_number }}</td>
+                                            <td>{{ $patient->name }}</td>
                                             <td>{{ $patient->email }}</td>
                                             <td>
                                                 <a href="{{ route('admin.patient.show', $patient->id) }}" class="btn btn-info">View</a>
-                                                <a href="{{ route('admin.patient.edit', $patient->id) }}" class="btn btn-warning">Edit</a>
+                                                @if(!$patient->is_approved)
+                                                    <form action="{{ route('admin.patient.approve', $patient->id) }}" method="POST" style="display:inline;">
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-success">Approve</button>
+                                                    </form>
+                                                @endif
                                                 <form action="{{ route('admin.patient.destroy', $patient->id) }}" method="POST" style="display:inline;">
                                                     @csrf
                                                     @method('DELETE')

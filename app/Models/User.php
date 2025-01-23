@@ -18,11 +18,26 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'middle_name',
+        'last_name',
+        'full_name',
+        'gender',
+        'date_of_birth',
+        'age_category',
+        'phone_number',
         'email',
-        'password',
-        'unique_id', // Add unique_id to fillable attributes
-        'usertype', // Add usertype to fillable attributes
+        'full_address',
+        'religion',
+        'economic_status',
+        'bpl_card_number',
+        'ayushman_card',
+        'emergency_contact_name',
+        'emergency_contact_phone',
+        'emergency_contact_relationship',
+        'usertype',
+        'is_approved',
+        'unique_id',
     ];
 
     /**

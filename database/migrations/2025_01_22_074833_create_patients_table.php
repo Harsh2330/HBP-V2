@@ -13,7 +13,7 @@ class CreatePatientsTable extends Migration
             $table->string('first_name');
             $table->string('middle_name')->nullable();
             $table->string('last_name');
-            $table->string('full_name'); // Add this line
+            $table->string('full_name'); // Ensure this line is included
             $table->enum('gender', ['Male', 'Female', 'Other']);
             $table->date('date_of_birth');
             $table->string('age_category');
@@ -27,6 +27,8 @@ class CreatePatientsTable extends Migration
             $table->string('emergency_contact_name');
             $table->string('emergency_contact_phone');
             $table->string('emergency_contact_relationship');
+            // $table->boolean('is_approved')->default(false); // Add this line
+            $table->boolean('is_approved')->default(false)->after('emergency_contact_relationship');
             $table->timestamps();
         });
     }

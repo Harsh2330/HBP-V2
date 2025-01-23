@@ -3,15 +3,50 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Patient;
+use App\Models\User;
+use App\Models\Patient; // Change to Patient model
 use Illuminate\Http\Request;
 
 class PatientController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $patients = Patient::paginate(10);
+        $query = User::where('usertype', 'user');
+
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%")
+                  ->orWhere('unique_id', 'like', "%{$search}%");
+            });
+        }
+
+        $patients = $query->paginate(10);
+
         return view('admin.patient.index', compact('patients'));
+    }
+
+    public function show(User $user)
+    {
+        return view('admin.patient.show', compact('user'));
+    }
+
+    public function approve(User $user)
+    {
+        $user->is_approved = true;
+        $user->usertype = 'patient';
+
+        // Generate unique ID
+        $year = date('Y');
+        $lastUser = User::where('unique_id', 'like', "PAT-$year-%")->orderBy('unique_id', 'desc')->first();
+        $lastNumber = $lastUser ? intval(substr($lastUser->unique_id, -4)) : 0;
+        $newNumber = str_pad($lastNumber + 1, 4, '0', STR_PAD_LEFT);
+        $user->unique_id = "PAT-$year-$newNumber";
+
+        $user->save();
+
+        return redirect()->route('admin.patient.index')->with('success', 'Patient approved successfully.');
     }
 
     public function create()
@@ -29,7 +64,7 @@ class PatientController extends Controller
             'date_of_birth' => 'required|date',
             'age_category' => 'required|string',
             'phone_number' => 'required|string|max:15',
-            'email' => 'nullable|string|email|max:255|unique:patients',
+            'email' => 'nullable|string|email|max:255|unique:users|unique:patients', // Validate for both tables
             'full_address' => 'required|string',
             'religion' => 'required|string',
             'economic_status' => 'required|string',
@@ -43,54 +78,19 @@ class PatientController extends Controller
         $data = $request->all();
         $data['full_name'] = trim("{$request->first_name} {$request->middle_name} {$request->last_name}");
 
+        // Create user
+        $user = User::create([
+            'name' => $data['full_name'],
+            'email' => $data['email'],
+            'phone_number' => $data['phone_number'],
+            'usertype' => 'patient',
+            'password' => bcrypt('defaultpassword'), // Set a default password or handle password creation
+        ]);
+
+        // Create patient
+        $data['user_id'] = $user->id;
         Patient::create($data);
 
         return redirect()->route('admin.patient.index')->with('success', 'Patient created successfully.');
-    }
-
-    public function show(Patient $patient)
-    {
-        return view('admin.patient.show', compact('patient'));
-    }
-
-    public function edit(Patient $patient)
-    {
-        return view('admin.patient.edit', compact('patient'));
-    }
-
-    public function update(Request $request, Patient $patient)
-    {
-        $request->validate([
-            'first_name' => 'required|string|max:255',
-            'middle_name' => 'nullable|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'gender' => 'required|in:Male,Female,Other',
-            'date_of_birth' => 'required|date',
-            'age_category' => 'required|string',
-            'phone_number' => 'required|string|max:15',
-            'email' => 'nullable|string|email|max:255|unique:patients,email,' . $patient->id,
-            'full_address' => 'required|string',
-            'religion' => 'required|string',
-            'economic_status' => 'required|string',
-            'bpl_card_number' => 'nullable|string|max:255',
-            'ayushman_card' => 'required|boolean',
-            'emergency_contact_name' => 'required|string|max:255',
-            'emergency_contact_phone' => 'required|string|max:15',
-            'emergency_contact_relationship' => 'required|string',
-        ]);
-
-        $data = $request->all();
-        $data['full_name'] = trim("{$request->first_name} {$request->middle_name} {$request->last_name}");
-
-        $patient->update($data);
-
-        return redirect()->route('admin.patient.index')->with('success', 'Patient updated successfully.');
-    }
-
-    public function destroy(Patient $patient)
-    {
-        $patient->delete();
-
-        return redirect()->route('admin.patient.index')->with('success', 'Patient deleted successfully.');
     }
 }

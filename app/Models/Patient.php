@@ -10,6 +10,7 @@ class Patient extends Model
         'first_name',
         'middle_name',
         'last_name',
+        'full_name', // Ensure this line is included
         'gender',
         'date_of_birth',
         'age_category',
@@ -23,11 +24,22 @@ class Patient extends Model
         'emergency_contact_name',
         'emergency_contact_phone',
         'emergency_contact_relationship',
+        'is_approved', // Ensure this line is included
     ];
 
     // Add an accessor for the full_name attribute
     public function getFullNameAttribute()
     {
         return trim("{$this->first_name} {$this->middle_name} {$this->last_name}");
+    }
+
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class, 'id');
+    }
+
+    public function history()
+    {
+        return $this->hasMany(AppointmentHistory::class, 'id');
     }
 }

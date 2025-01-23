@@ -60,6 +60,8 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function() {
 
 Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function() {
     Route::resource('patient', PatientController::class);
+    Route::post('patient/{user}/approve', [PatientController::class, 'approve'])->name('patient.approve');
+    Route::post('patient', [PatientController::class, 'store'])->name('patient.store'); // Add this line
 });
 
 Route::resource('medical_visit', MedicalVisitController::class)->except(['index']);

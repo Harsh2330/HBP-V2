@@ -41,15 +41,26 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * The attributes that should be cast.
      *
-     * @return array<string, string>
+     * @var array<string, string>
      */
-    protected function casts(): array
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
+
+    public function approveAsPatient(array $patientDetails)
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        $this->usertype = 'patient';
+        $this->unique_id = uniqid('patient_');
+        $this->save();
+
+        return Patient::create(array_merge($patientDetails, ['user_id' => $this->id]));
+    }
+
+    public function patient()
+    {
+        return $this->hasOne(Patient::class);
     }
 }

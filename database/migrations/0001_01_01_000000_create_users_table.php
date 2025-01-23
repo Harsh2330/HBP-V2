@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('unique_id')->unique();
             $table->string('usertype')->default('patient');
+            $table->boolean('is_approved')->default(false); // Add this line
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

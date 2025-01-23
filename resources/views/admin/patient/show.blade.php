@@ -23,6 +23,7 @@
                             <h3 class="card-title">Patient Information</h3>
                         </div>
                         <div class="card-body">
+                            @if(isset($patient))
                             <table class="table table-bordered">
                                 <tr>
                                     <th>First Name</th>
@@ -97,6 +98,9 @@
                                     <td>{{ $patient->is_approved ? 'Approved' : 'Not Approved' }}</td>
                                 </tr>
                             </table>
+                            @else
+                            <p>Patient information is not available.</p>
+                            @endif
                             <a href="{{ route('admin.patient.index') }}" class="btn btn-primary mt-3">Back to List</a>
                         </div>
                     </div>

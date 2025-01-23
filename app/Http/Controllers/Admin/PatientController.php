@@ -27,9 +27,13 @@ class PatientController extends Controller
         return view('admin.patient.index', compact('patients'));
     }
 
-    public function show(User $user)
+    public function show($id)
     {
-        return view('admin.patient.show', compact('user'));
+        $patient = User::find($id); // Fetch patient details from users table
+        if (!$patient) {
+            return redirect()->route('admin.patient.index')->with('error', 'Patient not found.');
+        }
+        return view('admin.patient.show', compact('patient'));
     }
 
     public function approve(User $user)

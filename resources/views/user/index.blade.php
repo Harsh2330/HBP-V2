@@ -35,7 +35,7 @@
                             <table class="table table-hover">
                                 <thead class="thead-dark">
                                     <tr>
-                                        <th>Name</th>
+                                        <th>Full Name</th>
                                         <th>Email</th>
                                         <th>User Type</th>
                                         <th>Unique ID</th>
@@ -45,7 +45,7 @@
                                 <tbody>
                                     @foreach ($users as $user)
                                         <tr>
-                                            <td>{{ $user->name }}</td>
+                                            <td>{{ $user->first_name }} {{ $user->middle_name }} {{ $user->last_name }}</td>
                                             <td>{{ $user->email }}</td>
                                             <td>{{ $user->usertype }}</td>
                                             <td>{{ $user->unique_id }}</td>

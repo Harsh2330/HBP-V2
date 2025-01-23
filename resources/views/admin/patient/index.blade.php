@@ -48,7 +48,7 @@
                                 <tbody>
                                     @foreach($patients as $patient)
                                         <tr>
-                                            <td>{{ $patient->name }}</td>
+                                            <td>{{ $patient->first_name }} {{ $patient->middle_name }} {{ $patient->last_name }}</td>
                                             <td>{{ $patient->email }}</td>
                                             <td>
                                                 <a href="{{ route('admin.patient.show', $patient->id) }}" class="btn btn-info">View</a>

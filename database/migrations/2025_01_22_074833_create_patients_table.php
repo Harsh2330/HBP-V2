@@ -27,7 +27,6 @@ class CreatePatientsTable extends Migration
             $table->string('emergency_contact_name');
             $table->string('emergency_contact_phone');
             $table->string('emergency_contact_relationship');
-            $table->boolean('is_approved')->default(false); // Remove 'after' clause
             $table->timestamps();
         });
     }

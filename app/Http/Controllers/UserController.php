@@ -12,7 +12,9 @@ class UserController extends Controller
         $query = User::query();
 
         if ($request->has('search')) {
-            $query->where('name', 'like', '%' . $request->search . '%')
+            $query->where('first_name', 'like', '%' . $request->search . '%')
+                  ->orWhere('middle_name', 'like', '%' . $request->search . '%')
+                  ->orWhere('last_name', 'like', '%' . $request->search . '%')
                   ->orWhere('email', 'like', '%' . $request->search . '%')
                   ->orWhere('unique_id', 'like', '%' . $request->search . '%');
         }
@@ -60,6 +62,7 @@ class UserController extends Controller
         $user->save();
 
         return redirect()->route('admin.user.index')->with('status', 'User created successfully!');
+        return $user; 
     }
 
     // Show the form for editing a user

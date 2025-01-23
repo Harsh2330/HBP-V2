@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\UserController; // Add this import
 use App\Models\User;
 use App\Models\Patient; // Change to Patient model
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB; // Add this import
+use Illuminate\Support\Facades\Log; // Add this import
 
 class PatientController extends Controller
 {
@@ -16,7 +19,9 @@ class PatientController extends Controller
         if ($request->has('search')) {
             $search = $request->input('search');
             $query->where(function($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
+                $q->where('first_name', 'like', "%{$search}%")
+                  ->orWhere('middle_name', 'like', "%{$search}%")
+                  ->orWhere('last_name', 'like', "%{$search}%")
                   ->orWhere('email', 'like', "%{$search}%")
                   ->orWhere('unique_id', 'like', "%{$search}%");
             });
@@ -82,18 +87,28 @@ class PatientController extends Controller
         $data = $request->all();
         $data['full_name'] = trim("{$request->first_name} {$request->middle_name} {$request->last_name}");
 
-        // Create user
-        $user = User::create([
-            'name' => $data['full_name'],
-            'email' => $data['email'],
-            'phone_number' => $data['phone_number'],
-            'usertype' => 'patient',
-            'password' => bcrypt('defaultpassword'), // Set a default password or handle password creation
-        ]);
+        DB::transaction(function () use ($data, $request) {
+            try {
+                // Use UserController to create user
+                $userController = new UserController();
+                $userRequest = new Request($request->only([
+                    'first_name', 'middle_name', 'last_name', 'date_of_birth', 'phone_number', 'email', 'password'
+                ]));
+                $userRequest->merge(['usertype' => 'patient']);
+                $userController->store($userRequest);
 
-        // Create patient
-        $data['user_id'] = $user->id;
-        Patient::create($data);
+                // Create patient
+                $user = User::where('email', $data['email'])->first();
+                if (!$user) {
+                    throw new \Exception('User creation failed.');
+                }
+                $data['user_id'] = $user->id;
+                Patient::create($data);
+            } catch (\Exception $e) {
+                Log::error('Error creating patient: ' . $e->getMessage());
+                throw $e;
+            }
+        });
 
         return redirect()->route('admin.patient.index')->with('success', 'Patient created successfully.');
     }

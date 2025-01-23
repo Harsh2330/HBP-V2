@@ -23,7 +23,7 @@
                             <h3 class="card-title">Patient Information</h3>
                         </div>
                         <div class="card-body">
-                            <form action="{{ route('admin.patient.store') }}" method="POST">
+                            <form id="patientForm" action="{{ route('admin.patient.store') }}" method="POST">
                                 @csrf
                                 <div class="form-group">
                                     <label for="first_name">First Name</label>
@@ -109,6 +109,11 @@
                                         <!-- Add other relationships as needed -->
                                     </select>
                                 </div>
+                                <div class="form-group">
+                                    <label for="password">Password</label>
+                                    <input type="password" name="password" class="form-control" required>
+                                </div>
+                                <input type="hidden" name="full_name" id="full_name">
                                 <button type="submit" class="btn btn-primary">Save</button>
                             </form>
                         </div>
@@ -119,4 +124,14 @@
     </section>
     <!-- /.content -->
 </div>
+
+<script>
+    document.getElementById('patientForm').addEventListener('submit', function() {
+        var firstName = document.querySelector('input[name="first_name"]').value;
+        var middleName = document.querySelector('input[name="middle_name"]').value;
+        var lastName = document.querySelector('input[name="last_name"]').value;
+        var fullName = firstName + ' ' + (middleName ? middleName + ' ' : '') + lastName;
+        document.getElementById('full_name').value = fullName;
+    });
+</script>
 @endsection

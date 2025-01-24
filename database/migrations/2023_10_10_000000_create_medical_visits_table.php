@@ -15,17 +15,17 @@ class CreateMedicalVisitsTable extends Migration
             $table->date('visit_date');
             $table->string('doctor_name');
             $table->string('nurse_name');
-            $table->text('diagnosis');
-            $table->text('simplified_diagnosis')->nullable();
-            $table->string('blood_pressure')->nullable();
-            $table->string('heart_rate')->nullable();
-            $table->string('temperature')->nullable();
-            $table->string('weight')->nullable();
-            $table->text('ongoing_treatments')->nullable();
-            $table->text('medications_prescribed')->nullable();
-            $table->text('procedures')->nullable();
-            $table->text('doctor_notes')->nullable();
-            $table->text('nurse_observations')->nullable();
+            $table->text('diagnosis')->nullable()->default(null); // Made nullable with default value
+            $table->text('simplified_diagnosis')->nullable()->default(null);
+            $table->string('blood_pressure')->nullable()->default(null);
+            $table->string('heart_rate')->nullable()->default(null);
+            $table->string('temperature')->nullable()->default(null);
+            $table->string('weight')->nullable()->default(null);
+            $table->text('ongoing_treatments')->nullable()->default(null);
+            $table->text('medications_prescribed')->nullable()->default(null);
+            $table->text('procedures')->nullable()->default(null);
+            $table->text('doctor_notes')->nullable()->default(null);
+            $table->text('nurse_observations')->nullable()->default(null);
             $table->timestamps();
 
             $table->foreign('patient_id')->references('id')->on('users')->onDelete('cascade');

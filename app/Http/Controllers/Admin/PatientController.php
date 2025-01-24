@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB; // Add this import
 use Illuminate\Support\Facades\Log; // Add this import
 
 class PatientController extends Controller
-{
+{         
     public function index(Request $request)
     {
         $query = User::where('usertype', 'user');
@@ -54,9 +54,26 @@ class PatientController extends Controller
         $user->unique_id = "PAT-$year-$newNumber";
 
         $user->save();
-
-        return redirect()->route('admin.patient.index')->with('success', 'Patient approved successfully.');
+        
+        // Start a new session for approved patients
+        session(['approved_session' => [
+            'user_id' => $user->id,
+            'unique_id' => $user->unique_id,
+            'approved_at' => now(),
+        ]]);
+        
+        return redirect()->route('admin.patient.edit', ['patient' => $user->id])->with('success', 'Patient approved successfully.');
     }
+
+    public function edit($id)
+    {
+        $patient = User::find($id); // Fetch patient details from users table
+        if (!$patient) {
+            return redirect()->route('admin.patient.index')->with('error', 'Patient not found.');
+        }
+        return view('admin.patient.edit', compact('patient'));
+    }
+    
 
     public function create()
     {
@@ -85,7 +102,8 @@ class PatientController extends Controller
         ]);
 
         $data = $request->all();
-        $data['full_name'] = trim("{$request->first_name} {$request->middle_name} {$request->last_name}");
+        // Remove the full_name field
+        unset($data['full_name']);
 
         DB::transaction(function () use ($data, $request) {
             try {
@@ -111,5 +129,38 @@ class PatientController extends Controller
         });
 
         return redirect()->route('admin.patient.index')->with('success', 'Patient created successfully.');
+    }
+
+    public function storePatientData(Request $request, $id)
+    {
+        $request->validate([
+            'first_name' => 'required|string|max:255',
+            'middle_name' => 'nullable|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'date_of_birth' => 'required|date',
+            'phone_number' => 'required|string|max:15',
+            'email' => 'nullable|string|email|max:255|unique:users,email,' . $id,
+            'full_address' => 'required|string',
+            'religion' => 'required|string',
+            'economic_status' => 'required|string',
+            'bpl_card_number' => 'nullable|string|max:255',
+            'ayushman_card' => 'required|boolean',
+            'emergency_contact_name' => 'required|string|max:255',
+            'emergency_contact_phone' => 'required|string|max:15',
+            'emergency_contact_relationship' => 'required|string',
+            'age_category' => 'required|string',
+        ]);
+
+        $patientData = $request->only([
+            'first_name', 'middle_name', 'last_name', 'date_of_birth', 'age_category', 'phone_number', 'email', 'full_address', 'religion', 'economic_status', 'bpl_card_number', 'ayushman_card', 'emergency_contact_name', 'emergency_contact_phone', 'emergency_contact_relationship'
+        ]);
+
+        // Add full_name field
+        $patientData['full_name'] = trim($request->input('first_name') . ' ' . $request->input('middle_name') . ' ' . $request->input('last_name'));
+
+        $patient = new Patient($patientData);
+        $patient->save();
+
+        return redirect()->route('admin.patient.index')->with('success', 'Patient data stored successfully.');
     }
 }

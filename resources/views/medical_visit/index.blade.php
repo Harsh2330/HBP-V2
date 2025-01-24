@@ -40,13 +40,16 @@
                                     @foreach($medicalVisits as $visit)
                                         <tr>
                                             <td>{{ $visit->patient->unique_id }}</td>
-                                            <td>{{ $visit->patient->name }}</td>
+                                            <td>{{ $visit->patient->first_name }} {{ $visit->patient->middle_name}} {{ $visit->patient->last_name}}</td>
                                             <td>{{ $visit->visit_date }}</td>
                                             <td>{{ $visit->doctor_name }}</td>
                                             <td>{{ $visit->nurse_name }}</td>
                                             <td>{{ $visit->simplified_diagnosis }}</td>
                                             <td>
                                                 <a href="{{ route('medical_visit.show', $visit->id) }}" class="btn btn-info">View Visit</a>
+                                                @if(Auth::user()->usertype === 'doctor')
+                                                <a href="{{ route('medical_visit.edit', $visit->id) }}" class="btn btn-primary">Edit Visit</a>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach

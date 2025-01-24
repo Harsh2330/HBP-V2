@@ -21,7 +21,7 @@ Route::get('/dashboard', function () {
     } elseif ($user->usertype === 'patient') {
         return redirect()->route('patient.dashboard');
     } elseif ($user->usertype === 'user') {
-        return redirect()->route('users.dashboard'); // Change to 'users.dashboard'
+        return redirect()->route('users.dashboard');
     } elseif ($user->usertype === 'nurse') {
         return redirect()->route('nurse.dashboard');
     } else {
@@ -29,10 +29,12 @@ Route::get('/dashboard', function () {
     }
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('medical_visit/{id}/edit', [MedicalVisitController::class, 'edit'])->name('medical_visit.edit');
+    Route::patch('medical_visit/{id}', [MedicalVisitController::class, 'update'])->name('medical_visit.update');
 });
 
 require __DIR__.'/auth.php';
@@ -46,7 +48,7 @@ Route::get('doctor/dashboard', [HomeController::class, 'doctorIndex'])->name('do
 Route::get('patient/dashboard', [HomeController::class, 'patientIndex'])->name('patient.dashboard');
 
 // Add user panel routes
-Route::get('users/dashboard', [HomeController::class, 'userIndex'])->name('users.dashboard'); // Change to 'users.dashboard'
+Route::get('users/dashboard', [HomeController::class, 'userIndex'])->name('users.dashboard');
 
 // Add nurse panel routes
 Route::get('nurse/dashboard', [HomeController::class, 'nurseIndex'])->name('nurse.dashboard');
@@ -55,13 +57,14 @@ Route::get('/users', [UserController::class, 'index'])->name('user.index');
 
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function() {
     Route::resource('user', UserController::class);
-    Route::get('users', [UserController::class, 'index'])->name('users.index'); // Add this line
+    Route::get('users', [UserController::class, 'index'])->name('users.index');
 });
 
 Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function() {
     Route::resource('patient', PatientController::class);
     Route::post('patient/{user}/approve', [PatientController::class, 'approve'])->name('patient.approve');
-    Route::post('patient', [PatientController::class, 'store'])->name('patient.store'); // Add this line
+    Route::post('patient', [PatientController::class, 'store'])->name('patient.store');
+    Route::put('patient/{id}/storePatientData', [PatientController::class, 'storePatientData'])->name('patient.storePatientData');
 });
 
 Route::resource('medical_visit', MedicalVisitController::class);

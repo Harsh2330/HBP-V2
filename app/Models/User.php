@@ -23,7 +23,6 @@ class User extends Authenticatable
         'last_name', // Add last_name to fillable attributes
         'date_of_birth', // Add date_of_birth to fillable attributes
         'phone_number', // Add phone_number to fillable attributes
-        'name',
         'email',
         'password',
         'unique_id',

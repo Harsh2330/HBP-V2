@@ -10,9 +10,22 @@ class MedicalVisit extends Model
     use HasFactory;
 
     protected $fillable = [
-        'patient_id', 'unique_id', 'visit_date', 'doctor_name', 'nurse_name', 'diagnosis', 'simplified_diagnosis',
-        'blood_pressure', 'heart_rate', 'temperature', 'weight', 'ongoing_treatments',
-        'medications_prescribed', 'procedures', 'doctor_notes', 'nurse_observations'
+        'patient_id',
+        'unique_id',
+        'visit_date',
+        'doctor_name',
+        'nurse_name',
+        'diagnosis',
+        'simplified_diagnosis',
+        'blood_pressure',
+        'heart_rate',
+        'temperature',
+        'weight',
+        'ongoing_treatments',
+        'medications_prescribed',
+        'procedures',
+        'doctor_notes',
+        'nurse_observations'
     ];
 
     public function patient()

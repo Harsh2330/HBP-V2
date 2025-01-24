@@ -21,7 +21,7 @@
                             @if($visit)
                             <div class="patient-details mb-4">
                                 <h3>Patient Information</h3>
-                                <p><strong>Name:</strong> {{ $visit->patient->name }}</p>
+                                <p><strong>Name:</strong> {{ $visit->patient->first_name }} {{ $visit->patient->middle_name}} {{ $visit->patient->last_name}}</p>
                                 <p><strong>ID:</strong> {{ $visit->patient->unique_id }}</p>
                                 <p><strong>Gender:</strong> {{ $visit->patient->gender }}</p>
                                 <p><strong>Age:</strong> {{ $visit->patient->age }}</p>
@@ -55,6 +55,11 @@
                                 <p><strong>Doctor's Notes:</strong> {{ $visit->doctor_notes }}</p>
                                 <p><strong>Nurse's Observations:</strong> {{ $visit->nurse_observations }}</p>
                             </div>
+
+                            @if(Auth::user()->usertype === 'doctor')
+                            <a href="{{ route('medical_visit.edit', $visit->id) }}" class="btn btn-primary">Update Visit</a>
+                            @endif
+
                             @else
                             <p>No visit details available.</p>
                             @endif

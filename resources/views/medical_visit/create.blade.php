@@ -35,7 +35,7 @@
                                     <h3>Patient Information</h3>
                                     <div class="form-group">
                                         <label for="patient_id">Patient</label>
-                                        <select name="patient_id" id="patient_id" class="form-control">
+                                        <select name="patient_id" id="patient_id" class="form-control" @if(Auth::user()->usertype !== 'admin') disabled @endif>
                                             @foreach($patients as $patient)
                                                 <option value="{{ $patient->id }}" data-unique-id="{{ $patient->unique_id }}">{{ $patient->first_name }} {{ $patient->middle_name }} {{ $patient->last_name }}</option>
                                             @endforeach
@@ -48,67 +48,23 @@
                                     <h3>Visit Details</h3>
                                     <div class="form-group">
                                         <label for="visit_date">Visit Date</label>
-                                        <input type="date" name="visit_date" id="visit_date" class="form-control" value="{{ old('visit_date') }}">
+                                        <input type="date" name="visit_date" id="visit_date" class="form-control" value="{{ old('visit_date') }}" @if(Auth::user()->usertype !== 'admin') readonly @endif>
                                     </div>
                                     <div class="form-group">
-                                        <label for="doctor_name">Doctor</label>
-                                        <input type="text" name="doctor_name" id="doctor_name" class="form-control" value="{{ old('doctor_name') }}">
+                                        <label for="doctor_id">Doctor</label>
+                                        <select name="doctor_id" id="doctor_id" class="form-control" @if(Auth::user()->usertype !== 'admin') disabled @endif required>
+                                            @foreach($doctors as $doctor)
+                                                <option value="{{ $doctor->id }}">{{ $doctor->first_name }} {{ $doctor->middle_name }} {{ $doctor->last_name }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                     <div class="form-group">
-                                        <label for="nurse_name">Nurse</label>
-                                        <input type="text" name="nurse_name" id="nurse_name" class="form-control" value="{{ old('nurse_name') }}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="diagnosis">Diagnosis</label>
-                                        <textarea name="diagnosis" id="diagnosis" class="form-control" rows="3">{{ old('diagnosis') }}</textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="simplified_diagnosis">Simplified Diagnosis</label>
-                                        <textarea name="simplified_diagnosis" id="simplified_diagnosis" class="form-control" rows="3">{{ old('simplified_diagnosis') }}</textarea>
-                                    </div>
-                                </div>
-
-                                <div class="treatment-details">
-                                    <h3>Treatment Information</h3>
-                                    <div class="form-group">
-                                        <label for="blood_pressure">Blood Pressure</label>
-                                        <input type="text" name="blood_pressure" id="blood_pressure" class="form-control" value="{{ old('blood_pressure') }}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="heart_rate">Heart Rate</label>
-                                        <input type="text" name="heart_rate" id="heart_rate" class="form-control" value="{{ old('heart_rate') }}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="temperature">Temperature</label>
-                                        <input type="text" name="temperature" id="temperature" class="form-control" value="{{ old('temperature') }}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="weight">Weight</label>
-                                        <input type="text" name="weight" id="weight" class="form-control" value="{{ old('weight') }}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="ongoing_treatments">Ongoing Treatments</label>
-                                        <textarea name="ongoing_treatments" id="ongoing_treatments" class="form-control" rows="3">{{ old('ongoing_treatments') }}</textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="medications_prescribed">Medications Prescribed</label>
-                                        <textarea name="medications_prescribed" id="medications_prescribed" class="form-control" rows="3">{{ old('medications_prescribed') }}</textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="procedures">Procedures Performed</label>
-                                        <textarea name="procedures" id="procedures" class="form-control" rows="3">{{ old('procedures') }}</textarea>
-                                    </div>
-                                </div>
-
-                                <div class="notes">
-                                    <h3>Additional Notes</h3>
-                                    <div class="form-group">
-                                        <label for="doctor_notes">Doctor's Notes</label>
-                                        <textarea name="doctor_notes" id="doctor_notes" class="form-control" rows="3">{{ old('doctor_notes') }}</textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="nurse_observations">Nurse's Observations</label>
-                                        <textarea name="nurse_observations" id="nurse_observations" class="form-control" rows="3">{{ old('nurse_observations') }}</textarea>
+                                        <label for="nurse_id">Nurse</label>
+                                        <select name="nurse_id" id="nurse_id" class="form-control" @if(Auth::user()->usertype !== 'admin') disabled @endif required>
+                                            @foreach($nurses as $nurse)
+                                                <option value="{{ $nurse->id }}">{{ $nurse->first_name }} {{ $nurse->middle_name }} {{ $nurse->last_name }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
 

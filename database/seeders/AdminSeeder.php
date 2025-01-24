@@ -36,5 +36,53 @@ class AdminSeeder extends Seeder
             'usertype' => 'admin',
             'unique_id' => 'ADM-2023-0002', // Adjust the unique_id as needed
         ]);
+
+        User::create([
+            'first_name' => 'John',
+            'middle_name' => '',
+            'last_name' => 'Doe',
+            'date_of_birth' => '1990-01-01',
+            'phone_number' => '1111111111',
+            'email' => 'johndoe@example.com',
+            'password' => Hash::make('password'), // Change this to a secure password
+            'usertype' => 'user',
+            'unique_id' => 'USR-2023-0001',
+        ]);
+
+        User::create([
+            'first_name' => 'Jane',
+            'middle_name' => '',
+            'last_name' => 'Smith',
+            'date_of_birth' => '1990-01-01',
+            'phone_number' => '2222222222',
+            'email' => 'janesmith@example.com',
+            'password' => Hash::make('password'), // Change this to a secure password
+            'usertype' => 'nurse',
+            'unique_id' => 'NUR-2023-0001',
+        ]);
+
+        User::create([
+            'first_name' => 'Emily',
+            'middle_name' => '',
+            'last_name' => 'Johnson',
+            'date_of_birth' => '1990-01-01',
+            'phone_number' => '3333333333',
+            'email' => 'emilyjohnson@example.com',
+            'password' => Hash::make('password'), // Change this to a secure password
+            'usertype' => 'doctor',
+            'unique_id' => 'DOC-2023-0001',
+        ]);
+
+        User::create([
+            'first_name' => 'Michael',
+            'middle_name' => '',
+            'last_name' => 'Brown',
+            'date_of_birth' => '1990-01-01',
+            'phone_number' => '4444444444',
+            'email' => 'michaelbrown@example.com',
+            'password' => Hash::make('password'), // Change this to a secure password
+            'usertype' => 'patient',
+            'unique_id' => 'PAT-2023-0001',
+        ]);
     }
 }

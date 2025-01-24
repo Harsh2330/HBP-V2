@@ -102,8 +102,8 @@ class PatientController extends Controller
         ]);
 
         $data = $request->all();
-        // Remove the full_name field
-        unset($data['full_name']);
+        // Add the full_name field
+        $data['full_name'] = trim($request->input('first_name') . ' ' . $request->input('middle_name') . ' ' . $request->input('last_name'));
 
         DB::transaction(function () use ($data, $request) {
             try {

@@ -27,12 +27,15 @@
 
                             <form method="GET" action="{{ route('admin.user.index') }}" class="mb-3">
                                 <input type="text" name="search" placeholder="Search users..." class="form-control" value="{{ request('search') }}">
+                                @error('search')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
                             </form>
 
                             <table class="table table-hover">
                                 <thead class="thead-dark">
                                     <tr>
-                                        <th>Name</th>
+                                        <th>Full Name</th>
                                         <th>Email</th>
                                         <th>User Type</th>
                                         <th>Unique ID</th>
@@ -42,7 +45,7 @@
                                 <tbody>
                                     @foreach ($users as $user)
                                         <tr>
-                                            <td>{{ $user->name }}</td>
+                                            <td>{{ $user->first_name }} {{ $user->middle_name }} {{ $user->last_name }}</td>
                                             <td>{{ $user->email }}</td>
                                             <td>{{ $user->usertype }}</td>
                                             <td>{{ $user->unique_id }}</td>

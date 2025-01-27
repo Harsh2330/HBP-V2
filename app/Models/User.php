@@ -18,11 +18,15 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'first_name', // Add first_name to fillable attributes
+        'middle_name', // Add middle_name to fillable attributes
+        'last_name', // Add last_name to fillable attributes
+        'date_of_birth', // Add date_of_birth to fillable attributes
+        'phone_number', // Add phone_number to fillable attributes
         'email',
         'password',
-        'unique_id', // Add unique_id to fillable attributes
-        'usertype', // Add usertype to fillable attributes
+        'unique_id',
+        'usertype',
     ];
 
     /**
@@ -36,15 +40,26 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * The attributes that should be cast.
      *
-     * @return array<string, string>
+     * @var array<string, string>
      */
-    protected function casts(): array
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
+
+    public function approveAsPatient(array $patientDetails)
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        $this->usertype = 'patient';
+        $this->unique_id = uniqid('patient_');
+        $this->save();
+
+        return Patient::create(array_merge($patientDetails, ['user_id' => $this->id]));
+    }
+
+    public function patient()
+    {
+        return $this->hasOne(Patient::class);
     }
 }

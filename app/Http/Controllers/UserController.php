@@ -12,7 +12,9 @@ class UserController extends Controller
         $query = User::query();
 
         if ($request->has('search')) {
-            $query->where('name', 'like', '%' . $request->search . '%')
+            $query->where('first_name', 'like', '%' . $request->search . '%')
+                  ->orWhere('middle_name', 'like', '%' . $request->search . '%')
+                  ->orWhere('last_name', 'like', '%' . $request->search . '%')
                   ->orWhere('email', 'like', '%' . $request->search . '%')
                   ->orWhere('unique_id', 'like', '%' . $request->search . '%');
         }
@@ -31,10 +33,14 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'middle_name' => 'nullable|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'date_of_birth' => 'required|date',
+            'phone_number' => 'required|string|max:15',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8',
-            'usertype' => 'required|in:doctor,admin,patient,nurse,user', // Ensure 'user' is included
+            'usertype' => 'required|in:doctor,admin,patient,nurse,user',
         ]);
 
         $currentYear = date('Y');
@@ -44,7 +50,11 @@ class UserController extends Controller
         $uniqueId = sprintf('%s-%s-%04d', $prefix, $currentYear, $sequenceNumber);
 
         $user = new User;
-        $user->name = $request->name;
+        $user->first_name = $request->first_name;
+        $user->middle_name = $request->middle_name;
+        $user->last_name = $request->last_name;
+        $user->date_of_birth = $request->date_of_birth;
+        $user->phone_number = $request->phone_number;
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
         $user->usertype = $request->usertype;
@@ -52,6 +62,7 @@ class UserController extends Controller
         $user->save();
 
         return redirect()->route('admin.user.index')->with('status', 'User created successfully!');
+        return $user; 
     }
 
     // Show the form for editing a user
@@ -65,13 +76,21 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'middle_name' => 'nullable|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'date_of_birth' => 'required|date',
+            'phone_number' => 'required|string|max:15',
             'email' => 'required|email|unique:users,email,' . $id,
             'usertype' => 'required|in:doctor,admin,patient,nurse',
         ]);
 
         $user = User::findOrFail($id);
-        $user->name = $request->name;
+        $user->first_name = $request->first_name;
+        $user->middle_name = $request->middle_name;
+        $user->last_name = $request->last_name;
+        $user->date_of_birth = $request->date_of_birth;
+        $user->phone_number = $request->phone_number;
         $user->email = $request->email;
         if ($request->password) {
             $user->password = bcrypt($request->password);
